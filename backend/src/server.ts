@@ -3,8 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import usersRouter from './routes/users.js';
 import recipesRouter from './routes/recipes.js';
+import path from 'path';
 
 const app = express();
+app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 
 const PORT = 8000;
 const MONGO_URL = 'mongodb://127.0.0.1:27017/recipe-book';

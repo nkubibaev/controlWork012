@@ -44,9 +44,9 @@ export const createRecipe = async (
     res: Response,
 ) => {
     try {
-        const { title, recipe, image } = req.body;
+        const { title, recipe } = req.body;
 
-        if (!title || !recipe || !image) {
+        if (!title || !recipe || !req.file) {
             return res.status(400).json({
                 error: 'All fields are required',
             });
@@ -56,7 +56,7 @@ export const createRecipe = async (
             user: req.user!._id,
             title,
             recipe,
-            image,
+            image: `/uploads/recipes/${req.file.filename}`,
         });
 
         return res.status(201).json(newRecipe);
