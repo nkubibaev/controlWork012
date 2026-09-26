@@ -28,3 +28,15 @@ export const getRecipes = async () => {
 
     return data as Recipe[];
 };
+
+export const getRecipe = async (id: string) => {
+    const response = await fetch(`${API_URL}/recipes/${id}`);
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || 'Failed to load recipe');
+    }
+
+    return data as Recipe;
+};
