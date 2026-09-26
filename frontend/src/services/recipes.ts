@@ -56,3 +56,28 @@ export const getRecipesByUser = async (userId: string) => {
 
     return data as Recipe[];
 };
+
+export const deleteRecipe = async (
+    id: string,
+    token: string,
+) => {
+    const response = await fetch(
+        `${API_URL}/recipes/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+        },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.error || 'Failed to delete recipe',
+        );
+    }
+
+    return data;
+};

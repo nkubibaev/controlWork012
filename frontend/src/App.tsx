@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from "./pages/HomePage.tsx";
 import RecipePage from "./pages/RecipePage.tsx";
 import UserPage from "./pages/UserPage.tsx";
+import CreateRecipePage from "./pages/CreateRecipePage.tsx";
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/recipes/:id" element={<RecipePage />} />
           <Route path="/users/:id" element={<UserPage />} />
+          <Route path="/recipes/create" element={<CreateRecipePage />} />
         </Routes>
     );
 };
