@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import usersRouter from './routes/users.js';
 import recipesRouter from './routes/recipes.js';
 import path from 'path';
+import commentsRouter from './routes/comments.js';
 
 const app = express();
 app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/users', usersRouter);
 app.use('/api/recipes', recipesRouter);
+app.use('/api/comments', commentsRouter);
 
 const run = async () => {
     await mongoose.connect(MONGO_URL);
