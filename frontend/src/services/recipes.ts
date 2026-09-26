@@ -40,3 +40,19 @@ export const getRecipe = async (id: string) => {
 
     return data as Recipe;
 };
+
+export const getRecipesByUser = async (userId: string) => {
+    const response = await fetch(
+        `${API_URL}/recipes?user=${userId}`,
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.error || 'Failed to load user recipes',
+        );
+    }
+
+    return data as Recipe[];
+};

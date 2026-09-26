@@ -85,6 +85,10 @@ const HomePage = () => {
                                         variant="body2"
                                         color="text.secondary"
                                         sx={{ mt: 1 }}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            navigate(`/users/${recipe.user._id}`);
+                                        }}
                                     >
                                         Автор: {recipe.user.displayName}
                                     </Typography>

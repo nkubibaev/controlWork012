@@ -2,9 +2,15 @@ import { Request, Response } from 'express';
 import { Recipe } from '../models/recipe.js';
 import { RequestWithUser } from '../middleware/auth.js';
 
-export const getRecipes = async (_req: Request, res: Response) => {
+export const getRecipes = async (req: Request, res: Response) => {
     try {
-        const recipes = await Recipe.find()
+        const filter: { user?: string } = {};
+
+        if (req.query.user) {
+            filter.user = String(req.query.user);
+        }
+
+        const recipes = await Recipe.find(filter)
             .populate('user', 'username displayName avatar')
             .sort({ createdAt: -1 });
 
