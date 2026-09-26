@@ -30,6 +30,34 @@ export const loginUser = async (
     };
 };
 
+export const googleLogin = async (
+    credential: string,
+) => {
+    const response = await fetch(`${API_URL}/google`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            credential,
+        }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.error || 'Google login failed',
+        );
+    }
+
+    return data as {
+        message: string;
+        user: User;
+        token: string;
+    };
+};
+
 export const registerUser = async (
     username: string,
     displayName: string,

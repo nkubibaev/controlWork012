@@ -5,7 +5,8 @@ import {randomUUID} from "crypto";
 import {RequestWithUser} from "../middleware/auth";
 import { OAuth2Client } from 'google-auth-library';
 
-const googleClient = new OAuth2Client();
+const GOOGLE_CLIENT_ID = '723403873149-8pu77hu0nsmsgv5fg15nk3b9sgn5ku56.apps.googleusercontent.com';
+const googleClient = new OAuth2Client( GOOGLE_CLIENT_ID);
 
 export const register = async (req: Request, res: Response) => {
     try {
@@ -69,6 +70,12 @@ export const login = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(400).json({
                 error: 'Email or password is incorrect',
+            });
+        }
+
+        if (!user.password) {
+            return res.status(401).json({
+                error: 'Invalid email or password',
             });
         }
 
@@ -158,6 +165,7 @@ export const googleLogin = async (
 
         const ticket = await googleClient.verifyIdToken({
             idToken: credential,
+            audience: GOOGLE_CLIENT_ID,
         });
 
         const payload = ticket.getPayload();
@@ -183,7 +191,7 @@ export const googleLogin = async (
                 username: payload.email.split('@')[0],
                 displayName: payload.name || payload.email,
                 email: payload.email,
-                password: '',
+                password: null,
                 avatar: payload.picture || null,
                 googleId: payload.sub,
                 token: null,
@@ -216,7 +224,7 @@ export const googleLogin = async (
             token,
         });
     } catch (error) {
-        console.error(error);
+        console.error('Google login error:', error);
 
         return res.status(401).json({
             error: 'Invalid Google credential',

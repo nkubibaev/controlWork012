@@ -1,8 +1,9 @@
 import { type SubmitEvent, useState } from 'react';
 import { Alert, Box, Button, Container, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../services/users';
+import { loginUser, googleLogin } from '../services/users';
 import { useUserStore } from '../store/userStore';
+import { GoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -17,6 +18,21 @@ const LoginPage = () => {
 
         try {
             const data = await loginUser(email, password);
+
+            setUser(data.user, data.token);
+            navigate('/');
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            }
+        }
+    };
+
+    const googleSuccess = async (credential: string) => {
+        setError('');
+
+        try {
+            const data = await googleLogin(credential);
 
             setUser(data.user, data.token);
             navigate('/');
@@ -71,6 +87,16 @@ const LoginPage = () => {
                 >
                     Регистрация
                 </Button>
+                <GoogleLogin
+                    onSuccess={(response) => {
+                        if (response.credential) {
+                            googleSuccess(response.credential);
+                        }
+                    }}
+                    onError={() => {
+                        setError('Не удалось войти через Google');
+                    }}
+                />
             </Box>
         </Container>
     );

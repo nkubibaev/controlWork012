@@ -4,7 +4,7 @@ export interface UserFields {
     username: string;
     displayName: string;
     email: string;
-    password: string;
+    password: string | null;
     avatar: string | null;
     googleId?: string;
     token: string | null;
@@ -27,7 +27,8 @@ const UserSchema = new mongoose.Schema<UserFields>({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
+        default: null
     },
     avatar: {
         type: String,
